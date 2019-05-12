@@ -1,7 +1,7 @@
-# Project 4. Connect Private Blockchain to Front-End Client via APIs
+# Project 3. Connect Private Blockchain to Front-End Client via APIs
 
 
-This is Project 4, Connect Private Blockchain to Front-End Client via APIs, in this project I created the classes to manage my private blockchain, to be able to persist my blochchain I used LevelDB. then I created the two endpoint one get the block by block height and another post to submit the block to BlockChain.
+This is Project 3, Connect Private Blockchain to Front-End Client via APIs, in this project I created the classes to manage my private blockchain, to be able to persist my blochchain I used LevelDB. then I created the two endpoint one get the block by block height and another post to submit the block to BlockChain.
 
 # Framework used in this Project
 
