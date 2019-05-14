@@ -1,17 +1,11 @@
 class Block {
-  constructor(msg) {
+  constructor(data) {
     this.hash = "",
     this.height = 0,
-    this.body = {
-      this.body.address = "",
-      this.star =
-      {
-        this.body.star.ra = "",
-        this.body.star.dec = "",
-        this.body.star.story = msg,
-      }
-    },
+    this.body = data,
     this.time = "",
     this.previousBlockHash = ""
   }
 }
+
+module.exports.Block = Block
