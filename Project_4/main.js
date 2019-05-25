@@ -65,6 +65,7 @@ app.post('/block/',(req, res) => {
   let blockchain = new Blockchain.Blockchain();
   blockchain.addBlock(block).then((value) => {
     console.log('Added the block');
+    delete_address(address);
     res.send(responseOfAddedBlock(value));
   }).catch((err) => {console.log(err);
                      res.send('Error Found');});
@@ -88,7 +89,7 @@ app.post('/requestValidation',(req, res) => {
   }
 });
 
-app.post('/validate',(req, res) => {
+app.post('/message-signature/validate',(req, res) => {
   let req_body = req.body;
   let address = req_body.address.toString();
   let signature = req_body.signature.toString();
@@ -125,28 +126,30 @@ function addTimeOut(address){
   }
 
 function addRequestValidation(address){
-  let timestamp = new Date().getTime().toString().slice(0,-3);
-  let msg = address+":"+timestamp.toString()+":starRegistry";
-  let validationWindow = TimeoutRequestsWindowTime/1000;
   if (address in mempool){
     let data = mempool[address];
-    let requestTimeStamp = data.requestTimeStamp;
     let currentTimeStamp = new Date().getTime().toString().slice(0,-3);
-    let timeLeft = parseInt((currentTimeStamp - requestTimeStamp) / 1000);
-    mempool[address].requestTimeStamp = timeLeft;
+    let requestTimeStamp = data.requestTimeStamp;
+    let timeElaspsed = currentTimeStamp - requestTimeStamp;
+    console.log('Time elapsed ' + timeElaspsed );
+    let timeLeft = parseInt(TimeoutRequestsWindowTime/1000 - timeElaspsed);
+    console.log('Time left ' + timeLeft);
+    mempool[address].validationWindow = timeLeft;
     console.log('Address '+ address +' already submitted');
     return mempool[address];
   }
   else{
+    let timeStamp = new Date().getTime().toString().slice(0,-3);
+    let msg = address+":"+ timeStamp.toString()+":starRegistry";
     let data = {
       walletAddress :  address,
-      requestTimeStamp : timestamp,
-      validationWindow : validationWindow,
+      requestTimeStamp : timeStamp,
+      validationWindow : TimeoutRequestsWindowTime/1000,
       message : msg,
       }
     mempool[address] = data;
-    addTimeOut(address, validationWindow);
-    console.log('Added '+ address+ ' to the memorypool, default window time = 5 min');
+    addTimeOut(address, TimeoutRequestsWindowTime/1000);
+    console.log('Added '+ address+ ' to the memorypool, default window time 300 sec');
     return data;
     }
   }
