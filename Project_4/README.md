@@ -168,5 +168,5 @@ The response will look like:
     }
 
 
-Submission : 
+Submission :
 To successfully complete this project and meet the rubric criteria. You may submit your project as a archive file in zip format, or, with your github repository.
